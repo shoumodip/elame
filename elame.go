@@ -132,30 +132,46 @@ var elements = []Element{
 	{"og", "Oganesson"},
 }
 
-func find(name string) ([]Element, bool) {
+func find(pred string) ([]Element, bool) {
 	var impl func(string) bool
-	var output []Element
+	var path []Element
+	var paths [][]Element
 
 	impl = func(name string) bool {
 		if name == "" {
+			final := make([]Element, len(path))
+			copy(final, path)
+
+			paths = append(paths, final)
 			return true
 		}
 
+		found := false
 		for _, element := range elements {
 			if strings.HasPrefix(name, element.sign) {
-				output = append(output, element)
+				init := len(path)
+				path = append(path, element)
 				if impl(name[len(element.sign):]) {
-					return true
+					found = true
 				}
-				output = output[:len(output)-1]
+				path = path[:init]
 			}
 		}
 
-		return false
+		return found
 	}
 
-	result := impl(name)
-	return output, result
+	if impl(pred) {
+		min := 0
+		for i := 1; i < len(paths); i++ {
+			if len(paths[i]) < len(paths[min]) {
+				min = i
+			}
+		}
+		return paths[min], true
+	}
+
+	return nil, false
 }
 
 func title(str string) string {

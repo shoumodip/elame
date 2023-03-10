@@ -135,14 +135,14 @@ var elements = []Element{
 func find(pred string) ([]Element, bool) {
 	var impl func(string) bool
 	var path []Element
-	var paths [][]Element
+	var output []Element
 
 	impl = func(name string) bool {
 		if name == "" {
-			final := make([]Element, len(path))
-			copy(final, path)
-
-			paths = append(paths, final)
+			if len(path) < len(output) || len(output) == 0 {
+				output = make([]Element, len(path))
+				copy(output, path)
+			}
 			return true
 		}
 
@@ -161,17 +161,7 @@ func find(pred string) ([]Element, bool) {
 		return found
 	}
 
-	if impl(pred) {
-		min := 0
-		for i := 1; i < len(paths); i++ {
-			if len(paths[i]) < len(paths[min]) {
-				min = i
-			}
-		}
-		return paths[min], true
-	}
-
-	return nil, false
+	return output, impl(pred)
 }
 
 func title(str string) string {

@@ -162,9 +162,13 @@ function generateElements(pred) {
         results.removeChild(results.firstChild)
     }
 
+    function toTitleCase(str) {
+        return str.charAt(0).toUpperCase() + str.substring(1)
+    }
+
     for (const element of output) {
         const item = document.createElement("li")
-        item.appendChild(document.createTextNode(element.sign + " ".repeat(3 - element.sign.length) + element.name))
+        item.appendChild(document.createTextNode("(" + toTitleCase(element.sign) + ")" + " ".repeat(3 - element.sign.length) + element.name))
         results.appendChild(item)
     }
 }

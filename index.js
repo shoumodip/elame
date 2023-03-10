@@ -154,7 +154,7 @@ function generateElements(pred) {
 
 		return found
 	}
-    impl(pred)
+    impl(pred.toLowerCase())
 
     const results = document.getElementById("results")
 

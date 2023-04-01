@@ -130,21 +130,24 @@ const output = document.getElementById("output")
 
 document.getElementById("input").addEventListener("input", (event) => {
     var path = []
+    var length = 0
     var results = []
 
     function toTitleCase(str) {
         return str.charAt(0).toUpperCase() + str.substring(1)
     }
 
-	function generateSequence(name) {
-		if (name === "") {
-			if (path.length < results.length || results.length === 0) {
+    function generateSequence(name) {
+        if (name === "") {
+            const newLength = path.map((e) => e.name).join("").length
+            if ((path.length < results.length || results.length == 0) || (path.length == results.length && newLength < length)) {
+                length = newLength
                 results = [...path]
-			}
-			return true
-		}
+            }
+            return true
+        }
 
-		var found = false
+        var found = false
         elements.forEach((element) => {
             if (name.startsWith(element.sign)) {
                 const init = path.length
@@ -158,8 +161,8 @@ document.getElementById("input").addEventListener("input", (event) => {
             }
         })
 
-		return found
-	}
+        return found
+    }
 
     generateSequence(event.target.value.toLowerCase())
     output.replaceChildren(...results.map((result) => {

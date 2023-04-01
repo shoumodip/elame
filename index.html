@@ -2,11 +2,15 @@
 <html>
     <head>
         <title>Element Sequence Generator</title>
-        <script src="index.js"></script>
+        <link rel="stylesheet" href="style.css"/>
     </head>
     <body>
-        <h1>Element Sequence Generator</h1>
-        <input type="text" oninput="generateElements(this.value)">
-        <ul id="results" style="white-space: pre-wrap; font-family: monospace"></ul>
+        <section>
+            <input id="input" placeholder="Type query"/>
+        </section>
+
+        <hr>
+        <section id="output"></section>
+        <script src="script.js"></script>
     </body>
 </html>

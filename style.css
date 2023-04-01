@@ -1,0 +1,30 @@
+* {
+    font-size: 1.5rem;
+}
+
+.item {
+    gap: 0.3rem;
+    width: 100%;
+    display: flex;
+    font-family: monospace;
+}
+
+.sign {
+    color: green;
+    padding: 0px 0.5rem;
+    min-width: 2ch;
+    text-align: center;
+}
+
+input {
+    width: 100%;
+    border: none;
+    outline: none;
+    padding: 0.5rem;
+}
+
+section {
+    gap: 0.5rem;
+    display: flex;
+    flex-wrap: wrap;
+}

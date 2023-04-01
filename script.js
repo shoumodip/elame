@@ -126,49 +126,55 @@ const elements = [
     new Element("og", "Oganesson"),
 ]
 
-function generateElements(pred) {
+const output = document.getElementById("output")
+
+document.getElementById("input").addEventListener("input", (event) => {
     var path = []
-    var output = []
-
-	function impl(name) {
-		if (name === "") {
-			if (path.length < output.length || output.length === 0) {
-                output = [...path]
-			}
-			return true
-		}
-
-		var found = false
-        for (const element of elements) {
-            if (name.startsWith(element.sign)) {
-                const init = path.length
-                path.push(element)
-
-                if (impl(name.substring(element.sign.length))) {
-                    found = true
-                }
-
-                path.length = init
-            }
-        }
-
-		return found
-	}
-    impl(pred.toLowerCase())
-
-    const results = document.getElementById("results")
-
-    while (results.firstChild) {
-        results.removeChild(results.firstChild)
-    }
+    var results = []
 
     function toTitleCase(str) {
         return str.charAt(0).toUpperCase() + str.substring(1)
     }
 
-    for (const element of output) {
-        const item = document.createElement("li")
-        item.appendChild(document.createTextNode("(" + toTitleCase(element.sign) + ")" + " ".repeat(3 - element.sign.length) + element.name))
-        results.appendChild(item)
-    }
-}
+	function generateSequence(name) {
+		if (name === "") {
+			if (path.length < results.length || results.length === 0) {
+                results = [...path]
+			}
+			return true
+		}
+
+		var found = false
+        elements.forEach((element) => {
+            if (name.startsWith(element.sign)) {
+                const init = path.length
+                path.push(element)
+
+                if (generateSequence(name.substring(element.sign.length))) {
+                    found = true
+                }
+
+                path.length = init
+            }
+        })
+
+		return found
+	}
+
+    generateSequence(event.target.value.toLowerCase())
+    output.replaceChildren(...results.map((result) => {
+        const item = document.createElement("div")
+        item.className = "item"
+
+        const sign = document.createElement("div")
+        sign.className = "sign"
+        sign.innerText = toTitleCase(result.sign)
+        item.appendChild(sign)
+
+        const name = document.createElement("div")
+        name.className = "name"
+        name.innerText = toTitleCase(result.name)
+        item.appendChild(name)
+        return item
+    }))
+})

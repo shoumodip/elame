@@ -164,7 +164,7 @@ document.getElementById("input").addEventListener("input", (event) => {
         return found
     }
 
-    generateSequence(event.target.value.toLowerCase())
+    generateSequence(event.target.value.toLowerCase().replaceAll(" ", ""))
     output.replaceChildren(...results.map((result) => {
         const item = document.createElement("div")
         item.className = "item"

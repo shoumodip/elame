@@ -130,6 +130,7 @@ const output = document.getElementById("output")
 
 document.getElementById("input").addEventListener("input", (event) => {
     var path = []
+    var cache = {}
     var length = 0
     var results = []
 
@@ -137,13 +138,25 @@ document.getElementById("input").addEventListener("input", (event) => {
         return str.charAt(0).toUpperCase() + str.substring(1)
     }
 
+    function joinSequence(sequence) {
+        return sequence.map((e) => e.name).join("").length
+    }
+
     function generateSequence(name) {
         if (name === "") {
-            const newLength = path.map((e) => e.name).join("").length
+            const newLength = joinSequence(path)
             if ((path.length < results.length || results.length == 0) || (path.length == results.length && newLength < length)) {
                 length = newLength
                 results = [...path]
             }
+            return true
+        }
+
+        const cached = cache[name]
+        if (cached !== undefined) {
+            path.push(...cached)
+            length = joinSequence(path)
+            results = [...path]
             return true
         }
 
@@ -154,6 +167,9 @@ document.getElementById("input").addEventListener("input", (event) => {
                 path.push(element)
 
                 if (generateSequence(name.substring(element.sign.length))) {
+                    if (results.length != 0) {
+                        cache[name] = [...results.slice(init)]
+                    }
                     found = true
                 }
 
